@@ -7,3 +7,7 @@ push:
 	docker tag otel-demo-server:latest ybbbbasdf/otel-demo-server:latest
 	docker push ybbbbasdf/otel-demo-server:latest
 
+.PHONY: run
+run:
+	docker run --rm --net=host --hostname otel-demo-server -i -t otel-demo-server:latest sh
+

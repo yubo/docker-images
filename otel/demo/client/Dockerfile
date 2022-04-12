@@ -1,14 +1,13 @@
 FROM golang:1.17 as build
 RUN go env -w GOPROXY=direct
-RUN go install github.com/open-telemetry/opentelemetry-collector-contrib/examples/demo/client@v0.47.0
-CMD ["/go/bin/client"]
+RUN CGO_ENABLED=0 go install github.com/open-telemetry/opentelemetry-collector-contrib/examples/demo/client@v0.47.0
 
 FROM alpine:latest as certs
 RUN apk --update add ca-certificates
 
-FROM scratch
-ARG USER_UID=10001
-USER ${USER_UID}
+#FROM scratch
+FROM busybox
+
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=build /usr/local/go/lib/time/zoneinfo.zip /zoneinfo.zip
 COPY --from=build /go/bin/client /client
@@ -17,4 +16,4 @@ ENV ZONEINFO=/zoneinfo.zip
 ENV TZ=Asia/Shanghai
 ENV OTEL_EXPORTER_OTLP_ENDPOINT=0.0.0.0:4317
 
-ENTRYPOINT [ "/client" ]
+CMD ["/client"]
