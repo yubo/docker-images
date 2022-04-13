@@ -9,5 +9,5 @@ push:
 
 .PHONY: run
 run:
-	docker run --hostname otel-demo-client--rm -i -t --net=host otel-demo-client:latest sh
+	docker run --rm --net=host -it otel-demo-client:latest
 
