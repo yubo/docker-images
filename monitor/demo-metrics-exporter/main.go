@@ -26,7 +26,8 @@ func main() {
 
 	// http
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("content-type", "application/openmetrics-text; version=1.0.0; charset=utf-8")
+		w.Header().Add("content-type", "Content-Type: text/plain; version=0.0.4; charset=utf-8")
+		fmt.Fprintf(w, "# HELP demo_metrics_exporter demo gauge\n")
 		fmt.Fprintf(w, "# TYPE demo_metrics_exporter gauge\n")
 		for i, value := range p.metrics() {
 			fmt.Fprintf(w, "demo_metrics_exporter{n=\"%d\"} %f \n", i, value)
