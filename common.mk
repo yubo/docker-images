@@ -13,4 +13,4 @@ push:
 
 .PHONY: run
 run:
-	docker run --rm -it $(DOCKER_IMAGE_REPO)
+	docker run $(DOCKER_RUN_ARGS) $(DOCKER_IMAGE_REPO)
